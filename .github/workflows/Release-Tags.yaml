@@ -1,0 +1,30 @@
+env:
+  GITHUB_TOKEN_FOR_CREATING_TAGS: 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
+
+name: Releasing Tag Demo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Releasing-Tags:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN_FOR_CREATING_TAGS }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+
+      - name: Print the tag
+        run: echo ${{ steps.tag_version.outputs.new_tag }}
